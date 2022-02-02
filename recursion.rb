@@ -24,20 +24,21 @@ def merge_sort(arr)
   return arr if arr.length == 1
 
   # joining algorithm
-  l_arr = merge_sort(arr.slice!(0, arr.length / 2))
-  r_arr = merge_sort(arr)
-  sorted_arr = []
+  l_arr = merge_sort(arr.take(arr.length / 2))
+  r_arr = merge_sort(arr.drop(arr.length / 2))
+  merge(l_arr, r_arr)
+end
 
-  until l_arr.empty? && r_arr.empty?
-    sorted_arr << if r_arr.empty?
-                    l_arr.shift
-                  elsif l_arr.empty?
-                    r_arr.shift
-                  else
-                    r_arr.first >= l_arr.first ? l_arr.shift : r_arr.shift
-                  end
+def merge(l_arr, r_arr)
+  arr = []
+
+  until l_arr.empty? || r_arr.empty?
+    arr << (r_arr[0] >= l_arr[0] ? l_arr.shift : r_arr.shift) 
   end
-  sorted_arr
+
+  arr += l_arr if r_arr.empty?
+  arr += r_arr if l_arr.empty?
+  arr
 end
 
 worst_arr = 30.times.map { |x| 30 - x }
